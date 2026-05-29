@@ -1,0 +1,62 @@
+import { getAllPosts, getPostBySlug } from "@/lib/posts";
+import ReactMarkdown from "react-markdown";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
+export function generateStaticParams() {
+  return getAllPosts().map((post) => ({ slug: post.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
+  return { title: post.title };
+}
+
+export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+
+  let post;
+  try {
+    post = getPostBySlug(slug);
+  } catch {
+    notFound();
+  }
+
+  return (
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      {/* Back link */}
+      <Link
+        href="/blog"
+        className="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors mb-10"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+        Back to Blog
+      </Link>
+
+      {/* Header */}
+      <header className="mb-10">
+        <span className="inline-block text-xs font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950 px-2.5 py-1 rounded-full mb-4">
+          {post.tag}
+        </span>
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          {post.title}
+        </h1>
+        <p className="text-sm text-gray-400 dark:text-gray-500">
+          {new Date(post.date).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </p>
+      </header>
+
+      {/* Content */}
+      <article className="prose prose-gray dark:prose-invert prose-headings:text-gray-900 dark:prose-headings:text-white prose-a:text-indigo-600 dark:prose-a:text-indigo-400 prose-a:no-underline hover:prose-a:underline prose-code:text-indigo-600 dark:prose-code:text-indigo-400 prose-pre:bg-gray-900 dark:prose-pre:bg-gray-800 max-w-none">
+        <ReactMarkdown>{post.content}</ReactMarkdown>
+      </article>
+    </div>
+  );
+}
