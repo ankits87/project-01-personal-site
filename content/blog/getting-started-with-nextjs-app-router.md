@@ -3,6 +3,8 @@ title: "Getting Started with Next.js App Router"
 date: "2026-05-10"
 tag: "Next.js"
 excerpt: "A deep dive into the App Router architecture introduced in Next.js 13 and how it changes the way we think about routing."
+thumbnail: "/images/banners/thumbnail/NextJS-thumbnail.jpg"
+banner: "/images/banners/banner/NextJS-banner.webp"
 ---
 
 # Getting Started with Next.js App Router

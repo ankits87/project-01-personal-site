@@ -10,6 +10,8 @@ export interface PostMeta {
   date: string;
   tag: string;
   excerpt: string;
+  thumbnail?: string;
+  banner?: string;
 }
 
 export interface Post extends PostMeta {

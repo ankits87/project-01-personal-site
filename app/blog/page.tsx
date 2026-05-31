@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getAllPosts } from "@/lib/posts";
 
 export default function BlogPage() {
@@ -14,23 +15,36 @@ export default function BlogPage() {
       <div className="grid gap-8 sm:grid-cols-2">
         {posts.map((post) => (
           <Link key={post.slug} href={`/blog/${post.slug}`} className="block group">
-            <article className="h-full bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6 group-hover:border-indigo-300 dark:group-hover:border-indigo-700 group-hover:shadow-md transition-all">
-              <span className="inline-block text-xs font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950 px-2.5 py-1 rounded-full mb-3">
-                {post.tag}
-              </span>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors mb-2">
-                {post.title}
-              </h2>
-              <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-4">
-                {post.excerpt}
-              </p>
-              <p className="text-xs text-gray-400 dark:text-gray-500">
-                {new Date(post.date).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </p>
+            <article className="h-full bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 group-hover:border-indigo-300 dark:group-hover:border-indigo-700 group-hover:shadow-md transition-all overflow-hidden">
+              {(post.thumbnail ?? post.banner) && (
+                <div className="relative w-full aspect-video">
+                  <Image
+                    src={(post.thumbnail ?? post.banner)!}
+                    alt={`Thumbnail for ${post.title}`}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                  />
+                </div>
+              )}
+              <div className="p-6">
+                <span className="inline-block text-xs font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950 px-2.5 py-1 rounded-full mb-3">
+                  {post.tag}
+                </span>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors mb-2">
+                  {post.title}
+                </h2>
+                <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-4">
+                  {post.excerpt}
+                </p>
+                <p className="text-xs text-gray-400 dark:text-gray-500">
+                  {new Date(post.date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
+              </div>
             </article>
           </Link>
         ))}

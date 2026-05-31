@@ -1,5 +1,6 @@
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
 import ReactMarkdown from "react-markdown";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -35,6 +36,20 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         </svg>
         Back to Blog
       </Link>
+
+      {/* Banner */}
+      {post.banner && (
+        <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-10">
+          <Image
+            src={post.banner}
+            alt={`Banner for ${post.title}`}
+            fill
+            className="object-cover"
+            priority
+            sizes="(max-width: 768px) 100vw, 768px"
+          />
+        </div>
+      )}
 
       {/* Header */}
       <header className="mb-10">
