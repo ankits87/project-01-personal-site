@@ -1,11 +1,14 @@
 "use server";
 
 import { createServerClient } from "@/lib/supabase";
+import { Resend } from "resend";
 
 export type ContactFormState =
   | { status: "idle" }
   | { status: "success" }
   | { status: "error"; message: string };
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function submitContact(
   _prev: ContactFormState,
@@ -27,6 +30,18 @@ export async function submitContact(
   if (error) {
     console.error("[contact action] Supabase error:", JSON.stringify(error));
     return { status: "error", message: `DEBUG: ${error.code} — ${error.message}` };
+  }
+
+  const { error: emailError } = await resend.emails.send({
+    from: "Contact Form <onboarding@resend.dev>",
+    to: "ankitsaklani956@gmail.com",
+    replyTo: email,
+    subject: `New message from ${name}`,
+    text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
+  });
+
+  if (emailError) {
+    console.error("[contact action] Resend error:", emailError);
   }
 
   return { status: "success" };
