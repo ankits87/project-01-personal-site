@@ -29,7 +29,7 @@ export async function submitContact(
 
   if (error) {
     console.error("[contact action] Supabase error:", JSON.stringify(error));
-    return { status: "error", message: `DEBUG: ${error.code} — ${error.message}` };
+    return { status: "error", message: "Something went wrong. Please try again." };
   }
 
   const { error: emailError } = await resend.emails.send({
