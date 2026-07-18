@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 
 const navLinks = [
@@ -11,12 +11,17 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
+const emptySubscribe = () => () => {};
+
+// Avoid hydration mismatch — render nothing until mounted on client
+function useMounted() {
+  return useSyncExternalStore(emptySubscribe, () => true, () => false);
+}
+
 function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const mounted = useMounted();
 
-  // Avoid hydration mismatch — render nothing until mounted on client
-  useEffect(() => setMounted(true), []);
   if (!mounted) return <div className="w-9 h-9" />;
 
   const isDark = resolvedTheme === "dark";
@@ -25,7 +30,7 @@ function ThemeToggle() {
     <button
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label="Toggle dark mode"
-      className="w-9 h-9 flex items-center justify-center rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      className="w-9 h-9 flex items-center justify-center rounded-lg text-text-muted hover:bg-surface-raised transition-colors"
     >
       {isDark ? (
         /* Sun icon */
@@ -49,12 +54,12 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 transition-colors">
+    <nav className="bg-surface-default border-b border-border-default sticky top-0 z-50 transition-colors">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white tracking-tight">
-            Ankit<span className="text-indigo-600">.</span>dev
+          <Link href="/" className="text-xl font-bold text-text-primary tracking-tight">
+            Ankit<span className="text-brand-default">.</span>dev
           </Link>
 
           {/* Desktop links + toggle */}
@@ -65,8 +70,8 @@ export default function Navbar() {
                 href={href}
                 className={`text-sm font-medium transition-colors ${
                   pathname === href
-                    ? "text-indigo-600 border-b-2 border-indigo-600 pb-0.5"
-                    : "text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400"
+                    ? "text-brand-default border-b-2 border-brand-default pb-0.5"
+                    : "text-text-secondary hover:text-brand-default"
                 }`}
               >
                 {label}
@@ -79,7 +84,7 @@ export default function Navbar() {
           <div className="sm:hidden flex items-center gap-2">
             <ThemeToggle />
             <button
-              className="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none transition-colors"
+              className="p-2 rounded-md text-text-secondary hover:text-text-primary hover:bg-surface-raised focus:outline-none transition-colors"
               onClick={() => setMenuOpen((o) => !o)}
               aria-label="Toggle menu"
             >
@@ -99,7 +104,7 @@ export default function Navbar() {
 
       {/* Mobile dropdown */}
       {menuOpen && (
-        <div className="sm:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 pb-4 pt-2 flex flex-col gap-1 transition-colors">
+        <div className="sm:hidden border-t border-border-subtle bg-surface-default px-4 pb-4 pt-2 flex flex-col gap-1 transition-colors">
           {navLinks.map(({ href, label }) => (
             <Link
               key={href}
@@ -107,8 +112,8 @@ export default function Navbar() {
               onClick={() => setMenuOpen(false)}
               className={`text-sm font-medium py-2 px-3 rounded-md transition-colors ${
                 pathname === href
-                  ? "bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-indigo-600 dark:hover:text-indigo-400"
+                  ? "bg-brand-subtle text-brand-default"
+                  : "text-text-secondary hover:bg-surface-raised hover:text-brand-default"
               }`}
             >
               {label}
