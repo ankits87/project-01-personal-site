@@ -1,0 +1,214 @@
+/*
+ * Design Tokens — single source of truth
+ *
+ * Import this one file instead of the individual token files.
+ *
+ * Sections:
+ *   1. Brand Palette
+ *   2. Status Palette  (error · success)
+ *   3. Semantic Colors (light default · dark)
+ *   4. Spacing
+ *   5. Type Scale
+ */
+
+/* ══════════════════════════════════════════════════════════════════════════
+   1. BRAND PALETTE
+   10-step OKLCH scale. Chroma (0.1678) and hue (19.72) are fixed.
+   Only lightness changes. Base color anchored at step 600.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --color-brand-50:  oklch(0.97   0.1678 19.72 / 95.1%);   /* near-white tint   */
+  --color-brand-100: oklch(0.93   0.1678 19.72 / 95.1%);   /* subtle tint       */
+  --color-brand-200: oklch(0.86   0.1678 19.72 / 95.1%);   /* light tint        */
+  --color-brand-300: oklch(0.77   0.1678 19.72 / 95.1%);   /* pale              */
+  --color-brand-400: oklch(0.67   0.1678 19.72 / 95.1%);   /* muted             */
+  --color-brand-500: oklch(0.57   0.1678 19.72 / 95.1%);   /* accessible on dark */
+  --color-brand-600: oklch(0.4674 0.1678 19.72 / 95.1%);   /* ← BASE            */
+  --color-brand-700: oklch(0.37   0.1678 19.72 / 95.1%);   /* pressed / active  */
+  --color-brand-800: oklch(0.27   0.1678 19.72 / 95.1%);   /* dark shade        */
+  --color-brand-900: oklch(0.17   0.1678 19.72 / 95.1%);   /* near-black        */
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   2. STATUS PALETTE
+   Error: hue 25 (red)  ·  Success: hue 145 (green)
+   Parallel structure to brand palette: bg → border → default → hover →
+   active → text → focus-ring
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Error */
+  --color-error-bg:         oklch(0.97 0.02 25);
+  --color-error-bg-hover:   oklch(0.94 0.03 25);
+  --color-error-border:     oklch(0.88 0.06 25);
+  --color-error-subtle:     oklch(0.65 0.18 25);
+  --color-error-default:    oklch(0.50 0.20 25);
+  --color-error-hover:      oklch(0.42 0.20 25);
+  --color-error-active:     oklch(0.35 0.20 25);
+  --color-error-text:       oklch(0.42 0.20 25);
+  --color-error-focus-ring: oklch(0.65 0.18 25 / 35%);
+
+  /* Success */
+  --color-success-bg:         oklch(0.97 0.02 145);
+  --color-success-bg-hover:   oklch(0.94 0.03 145);
+  --color-success-border:     oklch(0.88 0.06 145);
+  --color-success-subtle:     oklch(0.65 0.15 145);
+  --color-success-default:    oklch(0.50 0.16 145);
+  --color-success-hover:      oklch(0.43 0.16 145);
+  --color-success-active:     oklch(0.36 0.16 145);
+  --color-success-text:       oklch(0.38 0.16 145);
+  --color-success-focus-ring: oklch(0.65 0.15 145 / 35%);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   3. SEMANTIC COLORS
+   Theme resolution order (highest wins):
+     [data-theme="dark"] > [data-theme="light"] > prefers-color-scheme > :root
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Light (default) ──────────────────────────────────────────────────────── */
+
+:root,
+[data-theme="light"] {
+  /* Background — page-level surfaces */
+  --color-bg-default:          oklch(1 0 0);
+  --color-bg-subtle:           var(--color-brand-50);
+  --color-bg-inverse:          var(--color-brand-900);
+
+  /* Surface — cards, panels, modals */
+  --color-surface-default:     oklch(1 0 0);
+  --color-surface-raised:      var(--color-brand-50);
+  --color-surface-overlay:     oklch(1 0 0 / 92%);
+
+  /* Border — dividers, outlines, rings */
+  --color-border-subtle:       var(--color-brand-100);
+  --color-border-default:      var(--color-brand-200);
+  --color-border-strong:       var(--color-brand-400);
+
+  /* Text — content hierarchy */
+  --color-text-primary:        var(--color-brand-900);
+  --color-text-secondary:      var(--color-brand-700);
+  --color-text-muted:          var(--color-brand-500);
+  --color-text-disabled:       var(--color-brand-300);
+  --color-text-inverse:        var(--color-brand-50);
+  --color-text-on-brand:       var(--color-brand-50);
+
+  /* Brand interactive — buttons, links, focus */
+  --color-brand-default:       var(--color-brand-600);
+  --color-brand-hover:         var(--color-brand-700);
+  --color-brand-active:        var(--color-brand-800);
+  --color-brand-subtle:        var(--color-brand-100);
+  --color-brand-subtle-hover:  var(--color-brand-200);
+  --color-brand-disabled:      var(--color-brand-300);
+  --color-brand-focus-ring:    var(--color-brand-400);
+}
+
+/* ── Dark ─────────────────────────────────────────────────────────────────── */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    /* Background */
+    --color-bg-default:        oklch(0.12 0.1678 19.72 / 95.1%); /* deeper than 900 */
+    --color-bg-subtle:         var(--color-brand-900);
+    --color-bg-inverse:        var(--color-brand-50);
+
+    /* Surface */
+    --color-surface-default:   var(--color-brand-800);
+    --color-surface-raised:    var(--color-brand-700);
+    --color-surface-overlay:   oklch(0.17 0.1678 19.72 / 85%);
+
+    /* Border */
+    --color-border-subtle:     var(--color-brand-800);
+    --color-border-default:    var(--color-brand-700);
+    --color-border-strong:     var(--color-brand-500);
+
+    /* Text */
+    --color-text-primary:      var(--color-brand-50);
+    --color-text-secondary:    var(--color-brand-200);
+    --color-text-muted:        var(--color-brand-400);
+    --color-text-disabled:     var(--color-brand-700);
+    --color-text-inverse:      var(--color-brand-900);
+    --color-text-on-brand:     var(--color-brand-900);
+
+    /* Brand interactive — lighter for contrast on dark bg */
+    --color-brand-default:     var(--color-brand-500);
+    --color-brand-hover:       var(--color-brand-400);
+    --color-brand-active:      var(--color-brand-300);
+    --color-brand-subtle:      oklch(0.4674 0.1678 19.72 / 18%);
+    --color-brand-subtle-hover:oklch(0.4674 0.1678 19.72 / 28%);
+    --color-brand-disabled:    var(--color-brand-800);
+    --color-brand-focus-ring:  var(--color-brand-400);
+  }
+}
+
+[data-theme="dark"] {
+  /* Background */
+  --color-bg-default:        oklch(0.12 0.1678 19.72 / 95.1%);
+  --color-bg-subtle:         var(--color-brand-900);
+  --color-bg-inverse:        var(--color-brand-50);
+
+  /* Surface */
+  --color-surface-default:   var(--color-brand-800);
+  --color-surface-raised:    var(--color-brand-700);
+  --color-surface-overlay:   oklch(0.17 0.1678 19.72 / 85%);
+
+  /* Border */
+  --color-border-subtle:     var(--color-brand-800);
+  --color-border-default:    var(--color-brand-700);
+  --color-border-strong:     var(--color-brand-500);
+
+  /* Text */
+  --color-text-primary:      var(--color-brand-50);
+  --color-text-secondary:    var(--color-brand-200);
+  --color-text-muted:        var(--color-brand-400);
+  --color-text-disabled:     var(--color-brand-700);
+  --color-text-inverse:      var(--color-brand-900);
+  --color-text-on-brand:     var(--color-brand-900);
+
+  /* Brand interactive */
+  --color-brand-default:     var(--color-brand-500);
+  --color-brand-hover:       var(--color-brand-400);
+  --color-brand-active:      var(--color-brand-300);
+  --color-brand-subtle:      oklch(0.4674 0.1678 19.72 / 18%);
+  --color-brand-subtle-hover:oklch(0.4674 0.1678 19.72 / 28%);
+  --color-brand-disabled:    var(--color-brand-800);
+  --color-brand-focus-ring:  var(--color-brand-400);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   4. SPACING
+   4px grid, accelerating scale.
+   Steps 1–6: +4px · Steps 6–9: +8px · Steps 9–12: +16px
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --space-1:  0.25rem;  /*  4px */
+  --space-2:  0.5rem;   /*  8px */
+  --space-3:  0.75rem;  /* 12px */
+  --space-4:  1rem;     /* 16px */
+  --space-5:  1.25rem;  /* 20px */
+  --space-6:  1.5rem;   /* 24px */
+  --space-7:  2rem;     /* 32px */
+  --space-8:  2.5rem;   /* 40px */
+  --space-9:  3rem;     /* 48px */
+  --space-10: 4rem;     /* 64px */
+  --space-11: 5rem;     /* 80px */
+  --space-12: 6rem;     /* 96px */
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   5. TYPE SCALE
+   1.25 ratio (Major Third) · Base: 1rem (16px)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --font-size-xs:  0.64rem;    /*  ~10px */
+  --font-size-sm:  0.8rem;     /*  ~13px */
+  --font-size-md:  1rem;       /*   16px */
+  --font-size-lg:  1.25rem;    /*   20px */
+  --font-size-xl:  1.5625rem;  /*   25px */
+  --font-size-2xl: 1.953rem;   /*  ~31px */
+  --font-size-3xl: 2.441rem;   /*  ~39px */
+  --font-size-4xl: 3.052rem;   /*  ~49px */
+}

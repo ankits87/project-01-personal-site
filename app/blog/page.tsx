@@ -7,15 +7,15 @@ export default function BlogPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Blog</h1>
-      <p className="text-gray-500 dark:text-gray-400 text-lg mb-12">
+      <h1 className="text-4xl font-bold text-text-primary mb-4">Blog</h1>
+      <p className="text-text-secondary text-lg mb-12">
         Thoughts, tutorials, and stories from my journey as a developer.
       </p>
 
       <div className="grid gap-8 sm:grid-cols-2">
         {posts.map((post) => (
           <Link key={post.slug} href={`/blog/${post.slug}`} className="block group">
-            <article className="h-full bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 group-hover:border-indigo-300 dark:group-hover:border-indigo-700 group-hover:shadow-md transition-all overflow-hidden">
+            <article className="h-full bg-surface-default rounded-xl border border-border-default group-hover:border-brand-default group-hover:shadow-md transition-all overflow-hidden">
               {(post.thumbnail ?? post.banner) && (
                 <div className="relative w-full aspect-video">
                   <Image
@@ -28,16 +28,16 @@ export default function BlogPage() {
                 </div>
               )}
               <div className="p-6">
-                <span className="inline-block text-xs font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950 px-2.5 py-1 rounded-full mb-3">
+                <span className="inline-block text-xs font-semibold text-brand-default bg-brand-subtle px-2.5 py-1 rounded-full mb-3">
                   {post.tag}
                 </span>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors mb-2">
+                <h2 className="text-lg font-semibold text-text-primary group-hover:text-brand-default transition-colors mb-2">
                   {post.title}
                 </h2>
-                <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-4">
+                <p className="text-text-secondary text-sm leading-relaxed mb-4">
                   {post.excerpt}
                 </p>
-                <p className="text-xs text-gray-400 dark:text-gray-500">
+                <p className="text-xs text-text-muted">
                   {new Date(post.date).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",

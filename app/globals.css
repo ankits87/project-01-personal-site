@@ -1,12 +1,85 @@
 @import "tailwindcss";
+@import "../design-tokens.css";
 @plugin "@tailwindcss/typography";
 
-/* Enable class-based dark mode for next-themes */
-@custom-variant dark (&:where(.dark, .dark *));
+/* Dark mode is driven by next-themes setting [data-theme] on <html>,
+   matching design-tokens.css's theme resolution selectors. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Brand scale */
+  --color-brand-50: var(--color-brand-50);
+  --color-brand-100: var(--color-brand-100);
+  --color-brand-200: var(--color-brand-200);
+  --color-brand-300: var(--color-brand-300);
+  --color-brand-400: var(--color-brand-400);
+  --color-brand-500: var(--color-brand-500);
+  --color-brand-600: var(--color-brand-600);
+  --color-brand-700: var(--color-brand-700);
+  --color-brand-800: var(--color-brand-800);
+  --color-brand-900: var(--color-brand-900);
+
+  /* Status palette */
+  --color-error-bg: var(--color-error-bg);
+  --color-error-bg-hover: var(--color-error-bg-hover);
+  --color-error-border: var(--color-error-border);
+  --color-error-subtle: var(--color-error-subtle);
+  --color-error-default: var(--color-error-default);
+  --color-error-hover: var(--color-error-hover);
+  --color-error-active: var(--color-error-active);
+  --color-error-text: var(--color-error-text);
+  --color-error-focus-ring: var(--color-error-focus-ring);
+
+  --color-success-bg: var(--color-success-bg);
+  --color-success-bg-hover: var(--color-success-bg-hover);
+  --color-success-border: var(--color-success-border);
+  --color-success-subtle: var(--color-success-subtle);
+  --color-success-default: var(--color-success-default);
+  --color-success-hover: var(--color-success-hover);
+  --color-success-active: var(--color-success-active);
+  --color-success-text: var(--color-success-text);
+  --color-success-focus-ring: var(--color-success-focus-ring);
+
+  /* Semantic colors */
+  --color-bg-default: var(--color-bg-default);
+  --color-bg-subtle: var(--color-bg-subtle);
+  --color-bg-inverse: var(--color-bg-inverse);
+
+  --color-surface-default: var(--color-surface-default);
+  --color-surface-raised: var(--color-surface-raised);
+  --color-surface-overlay: var(--color-surface-overlay);
+
+  --color-border-subtle: var(--color-border-subtle);
+  --color-border-default: var(--color-border-default);
+  --color-border-strong: var(--color-border-strong);
+
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-disabled: var(--color-text-disabled);
+  --color-text-inverse: var(--color-text-inverse);
+  --color-text-on-brand: var(--color-text-on-brand);
+
+  --color-brand-default: var(--color-brand-default);
+  --color-brand-hover: var(--color-brand-hover);
+  --color-brand-active: var(--color-brand-active);
+  --color-brand-subtle: var(--color-brand-subtle);
+  --color-brand-subtle-hover: var(--color-brand-subtle-hover);
+  --color-brand-disabled: var(--color-brand-disabled);
+  --color-brand-focus-ring: var(--color-brand-focus-ring);
+
+  /* Type scale */
+  --text-xs: var(--font-size-xs);
+  --text-sm: var(--font-size-sm);
+  --text-base: var(--font-size-md);
+  --text-lg: var(--font-size-lg);
+  --text-xl: var(--font-size-xl);
+  --text-2xl: var(--font-size-2xl);
+  --text-3xl: var(--font-size-3xl);
+  --text-4xl: var(--font-size-4xl);
 }
 
 body {
