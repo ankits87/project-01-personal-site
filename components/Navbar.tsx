@@ -11,6 +11,8 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
+const THEME_TOGGLE_ENABLED = process.env.NEXT_PUBLIC_ENABLE_THEME_TOGGLE === "true";
+
 const emptySubscribe = () => () => {};
 
 // Avoid hydration mismatch — render nothing until mounted on client
@@ -77,12 +79,12 @@ export default function Navbar() {
                 {label}
               </Link>
             ))}
-            <ThemeToggle />
+            {THEME_TOGGLE_ENABLED && <ThemeToggle />}
           </div>
 
           {/* Mobile: toggle + hamburger */}
           <div className="sm:hidden flex items-center gap-2">
-            <ThemeToggle />
+            {THEME_TOGGLE_ENABLED && <ThemeToggle />}
             <button
               className="p-2 rounded-md text-text-secondary hover:text-text-primary hover:bg-surface-raised focus:outline-none transition-colors"
               onClick={() => setMenuOpen((o) => !o)}

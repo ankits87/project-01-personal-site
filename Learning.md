@@ -99,3 +99,19 @@ Decision log for the Personal Site (project-01) project. Append new entries at t
 **Security note:** used Vercel's official CLI directly in the workflow rather than a third-party community Action (e.g. `amondnet/vercel-action`), to avoid handing `VERCEL_TOKEN` to unaudited third-party code.
 
 **Outstanding (user must do manually — requires their Vercel account access):** create a Vercel project for this repo and add `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` as GitHub repo secrets. The `deploy` job will exist but fail until these are set.
+
+---
+
+## 2026-07-23 — Feature flag: light/dark theme toggle button, env-var based, defaults off
+
+**Decided:** Gate the `ThemeToggle` button in `components/Navbar.tsx` behind `NEXT_PUBLIC_ENABLE_THEME_TOGGLE`. Flag is read as `process.env.NEXT_PUBLIC_ENABLE_THEME_TOGGLE === "true"` — defaults to **off/hidden** unless explicitly set to `"true"`. Documented in new `.env.example` alongside the existing Supabase/Resend vars (which weren't previously documented anywhere).
+
+**Options considered:**
+- Env var (chosen) — free, zero new deps, matches how this repo already configures secrets (Supabase/Resend keys via env vars read in Server Components/Actions)
+- Local hardcoded constant in a `lib/flags.ts` — same tradeoffs as env var (still requires a redeploy to flip), rejected as redundant with the env var approach
+- Vercel Edge Config — would allow flipping the flag from the Vercel dashboard without a redeploy; rejected as more setup than justified for a single boolean, though worth reconsidering if more flags get added later
+- Self-hosted flag service (GrowthBook/Flagsmith) — rejected outright, far too much infra for one toggle
+
+**Why:** Hobby-project budget favors the free/no-infra option; a single UI toggle doesn't need a flag dashboard. Explicit `=== "true"` (rather than `!== "false"`) makes the flag **default off**, per user preference stated when reviewing the implementation — new/unset environments (e.g. a fresh clone, or Vercel preview deploys without the var set) won't show the toggle until someone opts in.
+
+**Scope:** only hides the manual toggle button. `next-themes`' `enableSystem` still applies OS-level light/dark preference regardless of this flag.
